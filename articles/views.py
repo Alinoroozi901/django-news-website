@@ -19,7 +19,7 @@ class ArticleList(mixins.CustomLoginNeededMixin, ListView):
             for word in words:
                 filters &= Q(title__icontains=word) | Q(body__icontains=word)
             return models.Article.objects.filter(filters)
-        return models.Article.objects.all()
+        return models.Article.objects.all().order_by('-views')
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['query'] = self.request.GET.get('q', '')
