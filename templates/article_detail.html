@@ -13,7 +13,17 @@
     </article>
 
     <hr>
-
+    <p>Views: {{ object.views }}</p>
+    <form method="post" action="{% url 'article_like' article.pk %}">
+        {% csrf_token %}
+        <button type="submit">
+            {% if request.user in article.likes.all %}
+                ❤️ Unlike ({{ object.likes.count }})
+            {% else %}
+                🤍 Like ({{ object.likes.count }})
+            {% endif %}
+        </button>
+    </form>
     <!-- بخش نظرات -->
     <section class="comments-section">
         <h3>Comments</h3>

@@ -29,6 +29,15 @@ class CommentGet(DetailView):
     model = models.Article
     template_name = "article_detail.html"
     
+    def get_object(self):
+        obj = super().get_object()
+        if self.request.method == 'GET':
+            if self.request.user not in obj.viewers.all():
+                obj.views += 1
+                obj.viewers.add(self.request.user)# add 1 every visit
+                obj.save()      # save to database
+        return obj
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = forms.CommentForm
@@ -94,3 +103,11 @@ class ArticleCreate(mixins.CustomLoginNeededMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+class ArticleLike(mixins.CustomLoginNeededMixin, View):
+    def post(self, request, pk):
+        article = models.Article.objects.get(pk=pk)
+        if request.user in article.likes.all():
+            article.likes.remove(request.user)  # unlike
+        else:
+            article.likes.add(request.user)     # like
+        return redirect("article_detail", pk=pk)

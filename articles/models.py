@@ -10,6 +10,17 @@ class Article(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
+    views = models.IntegerField(default=0)
+    viewers = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name='viewed_articles',
+        blank=True
+    )
+    likes = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name='liked_articles',
+        blank=True
+    )
     def __str__(self):
         return self.title
     def get_absolute_url(self):
