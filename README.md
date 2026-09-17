@@ -63,6 +63,7 @@ python manage.py runserver
 ---
 
 ## Project Structure
+```
 news/
 ├── manage.py
 ├── .env
@@ -103,7 +104,7 @@ news/
 ├── password_reset_done.html
 ├── password_reset_confirm.html
 └── password_reset_complete.html
-
+```
 ---
 
 ## About the Developer
