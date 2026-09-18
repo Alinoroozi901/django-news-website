@@ -1,12 +1,124 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
-{% block title %}LOG_IN{% endblock title %}
+{% block title %}Log In{% endblock title %}
+
+{% block w %}
+<style>
+    input[type=text],
+    input[type=password] {
+        background-color: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        padding: 8px 12px;
+        font-family: Georgia, serif;
+        color: var(--dark);
+        width: 300px;
+        display: block;
+        margin-bottom: 12px;
+        transition: 0.3s;
+    }
+
+    input[type=text]:focus,
+    input[type=password]:focus {
+        background-color: white;
+        outline: none;
+        border-color: var(--dark);
+        width: 350px;
+    }
+
+    label {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-weight: bold;
+        color: var(--dark);
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    .login-wrapper {
+        width: 420px;
+        background-color: var(--surface);
+        border: 2px solid var(--dark);
+        border-radius: 2px;
+        box-shadow: 6px 6px 0px var(--border);
+    }
+
+    .login-header {
+        background-color: var(--dark);
+        color: var(--bg);
+        text-align: center;
+        padding: 12px;
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 1rem;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        border-bottom: 2px solid var(--border);
+    }
+
+    .login-body {
+        padding: 24px;
+    }
+
+    .btn-submit {
+        background-color: var(--dark);
+        color: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        padding: 8px 24px;
+        font-family: 'Playfair Display', Georgia, serif;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 8px;
+    }
+
+    .btn-submit:hover {
+        background-color: var(--accent);
+        color: white;
+    }
+
+    .forgot-link {
+        display: block;
+        margin-top: 16px;
+        color: var(--accent);
+        font-family: Georgia, serif;
+        font-size: 0.85rem;
+        text-decoration: none;
+        border-top: 1px solid var(--border);
+        padding-top: 12px;
+    }
+
+    .forgot-link:hover {
+        color: var(--dark);
+    }
+
+    h2 {
+        font-family: 'Playfair Display', Georgia, serif;
+        color: var(--dark);
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        border-bottom: 2px double var(--border);
+        padding-bottom: 8px;
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock w %}
 
 {% block content %}
-<h2>LOG IN</h2> 
-<form action="" method="post">{% csrf_token %}
-    {{ form|crispy }}
-    <button type="submit" class="btn btn-success ml-10">SAVE</button>
-</form>
-<p><a href="{% url 'password_reset' %}">Forgot Your Password???</a></p>
+<h2>Log In</h2>
+<div class="login-wrapper">
+    <div class="login-header">Member Login</div>
+    <div class="login-body">
+        <form method="post">
+            {% csrf_token %}
+            <label for="id_username">Username</label>
+            <input type="text" name="username" id="id_username" required>
+            <label for="id_password">Password</label>
+            <input type="password" name="password" id="id_password" required>
+            <button type="submit" class="btn-submit">Enter</button>
+            <a href="{% url 'password_reset' %}" class="forgot-link">Forgot Your Password?</a>
+        </form>
+    </div>
+</div>
 {% endblock content %}

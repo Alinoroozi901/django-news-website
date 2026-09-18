@@ -2,48 +2,219 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>{% block title %}NewsPapperApp{% endblock title %}</title>
+    <title>{% block title %}NewsPaperApp{% endblock title %}</title>
     <meta name="viewport" content="width=device-width">
-    <!-- Bootstrap CSS -->
     {% block qq %}<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"/>{% endblock qq %}
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=IM+Fell+English&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:           #dcbcbf;
+            --surface:      #e3c8c3;
+            --border:       #ab646a;
+            --dark:         #2c1a1d;
+            --text:         #2c1a1d;
+            --text-light:   #5c3a3e;
+            --accent:       #ab646a;
+            --accent-hover: #8a4a50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            background-image: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 28px,
+                    rgba(171, 100, 106, 0.07) 28px,
+                    rgba(171, 100, 106, 0.07) 29px
+                );
+            color: var(--text);
+            font-family: Georgia, serif;
+            min-height: 100vh;
+        }
+
+        /* NAVBAR */
+        header {
+            background-color: var(--dark);
+            border-bottom: 3px double var(--border) !important;
+            padding: 12px 30px !important;
+            margin-bottom: 0 !important;
+        }
+
+        .navbar-brand {
+            color: var(--bg) !important;
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'Playfair Display', Georgia, serif;
+            letter-spacing: 3px;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        .navbar-brand:hover {
+            color: var(--border) !important;
+        }
+
+        /* DIVIDER LINE under navbar */
+        .header-divider {
+            text-align: center;
+            color: var(--border);
+            font-size: 1.2rem;
+            letter-spacing: 8px;
+            padding: 6px 0;
+            background-color: var(--surface);
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* BUTTONS */
+        .btn-new {
+            background-color: transparent;
+            color: var(--bg);
+            border: 1px solid var(--border);
+            padding: 5px 14px;
+            border-radius: 2px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-family: 'Playfair Display', serif;
+            transition: 0.3s;
+        }
+
+        .btn-new:hover {
+            background-color: var(--border);
+            color: white;
+        }
+
+        .btn-user {
+            background-color: var(--accent);
+            color: white !important;
+            border: none;
+            padding: 5px 14px;
+            border-radius: 2px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-family: 'Playfair Display', serif;
+            transition: 0.3s;
+        }
+
+        .btn-user:hover {
+            background-color: var(--accent-hover);
+            color: white !important;
+        }
+
+        .btn-login {
+            background-color: transparent;
+            color: var(--bg);
+            border: 1px solid var(--border);
+            padding: 5px 14px;
+            border-radius: 2px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-family: 'Playfair Display', serif;
+            transition: 0.3s;
+        }
+
+        .btn-login:hover {
+            background-color: var(--border);
+            color: white;
+        }
+
+        .btn-signup {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 5px 14px;
+            border-radius: 2px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-family: 'Playfair Display', serif;
+            transition: 0.3s;
+        }
+
+        .btn-signup:hover {
+            background-color: var(--accent-hover);
+            color: white;
+        }
+
+        /* DROPDOWN */
+        .dropdown-menu {
+            background-color: var(--dark);
+            border: 1px solid var(--border);
+            border-radius: 2px;
+        }
+
+        .dropdown-item {
+            color: var(--bg) !important;
+            font-family: 'IM Fell English', serif;
+            font-size: 0.9rem;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--accent) !important;
+            color: white !important;
+        }
+
+        /* MAIN CONTENT */
+        main {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+
+    </style>
+    {% block w %}{% endblock w %}
 </head>
 <body>
-    <div>
-        <header class="p-3 mb-3 border-bottom">
-            <div class="container">
-                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                    <a href="{% url 'home' %}" class="navbar-brand">Newspaper</a>
-                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+    <header class="p-3 border-bottom">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-between">
+                <a href="{% url 'home' %}" class="navbar-brand">Newspaper</a>
+                <div class="d-flex align-items-center gap-2">
                     {% if user.is_authenticated %}
-                    </ul>
-                    <a href="{% url 'article_create' %}" class="nav-link px-2 link-danger btn btn-warning me-2 text-decoration-none d-block">+ new</a>
-                    <div class="dropdown text-end">
-
-                        <a href="#" class="d-block link-white text-decoration-none dropdown-toggle btn btn-primary me-2" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">{{ user.username }}</a>
-                        <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                            {% if user.is_staff %}
-                                <li><a href="http://127.0.0.1:8000/admin/" class="dropdown-item">admin</a></li>
-                            {% endif %}
-                            <li><a href="{% url 'password_change' %}" class="dropdown-item">Change Password</a></li>
-                            <li><a href="#" onclick="document.getElementById('logout-form').submit();" class="dropdown-item">Peace Out!</a></li>
-                        </ul>
-                    </div>
+                        <a href="{% url 'article_create' %}" class="btn-new">+ New Article</a>
+                        <div class="dropdown">
+                            <a href="#" class="btn-user dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ user.username }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser1">
+                                {% if user.is_staff %}
+                                    <li><a href="http://127.0.0.1:8000/admin/" class="dropdown-item">Admin Panel</a></li>
+                                {% endif %}
+                                <li><a href="{% url 'password_change' %}" class="dropdown-item">Change Password</a></li>
+                                <li><hr class="dropdown-divider" style="border-color: var(--border);"></li>
+                                <li><a href="#" onclick="document.getElementById('logout-form').submit();" class="dropdown-item">Peace Out!</a></li>
+                            </ul>
+                        </div>
                     {% else %}
-                    </ul>
-                    <div class="text-end">
-                        <a href="{% url 'login' %}" class="btn btn-outline-primary me-2">Log In</a>
-                        <a href="{% url 'signup' %}" class="btn btn-primary">Sign Up</a>
-                    </div>
+                        <a href="{% url 'login' %}" class="btn-login">Log In</a>
+                        <a href="{% url 'signup' %}" class="btn-signup">Sign Up</a>
                     {% endif %}
                 </div>
             </div>
-        </header>
-    </div>
+        </div>
+    </header>
+    <div class="header-divider">✦ ✦ ✦</div>
+
     <main>
         {% block content %}
         {% endblock content %}
     </main>
-    <form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">{% csrf_token %}</form>
+
+    <form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
+        {% csrf_token %}
+    </form>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

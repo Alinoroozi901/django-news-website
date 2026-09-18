@@ -1,160 +1,219 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
-{% block title %}SIGN{% endblock title %}
+{% block title %}Sign Up{% endblock title %}
 {% block qq %}{% endblock qq %}
 {% block content %}
 <style>
-    *{margin: 0px;padding: 0px;box-sizing: border-box;}
-    .stro{
-        width: 100%;
-        height: 20px;
-        border: 1px solid rgb(0, 0, 0);
-        border-radius: 5px;
-        background-color: #d2bcc5;
+    h2 {
+        font-family: Georgia, serif;
+        font-size: 1.8rem;
+        color: var(--dark);
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+        border-bottom: 2px double var(--border);
+        padding-bottom: 10px;
     }
-    .passw{
+
+    .form-wrapper {
+        width: 600px;
+        margin: 0 auto;
+        background-color: var(--surface);
+        border: 2px solid var(--dark);
+        border-radius: 2px;
+        box-shadow: 6px 6px 0px var(--border);
+    }
+
+    .form-header {
+        background-color: var(--dark);
+        color: var(--bg);
+        text-align: center;
+        padding: 12px;
+        font-family: Georgia, serif;
+        font-size: 1rem;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        border-bottom: 2px solid var(--border);
+    }
+
+    .form-body {
+        padding: 20px;
+    }
+
+    .form-row {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid var(--border);
+        padding: 12px 0;
+    }
+
+    .form-row:last-of-type {
+        border-bottom: none;
+    }
+
+    .form-row label {
+        width: 45%;
+        font-family: Georgia, serif;
+        font-weight: bold;
+        font-size: 0.95rem;
+        color: var(--dark);
+        padding-right: 10px;
+    }
+
+    .form-row .field {
+        width: 55%;
+    }
+
+    .inputtxt {
+        background-color: transparent;
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        padding: 8px 12px;
+        width: 160px;
+        font-family: Georgia, serif;
+        color: var(--dark);
+        transition: 0.3s;
+    }
+
+    .inputtxt:focus {
+        width: 240px;
+        background-color: white;
+        outline: none;
+        border-color: var(--dark);
+    }
+
+    .inputnum {
+        background-color: transparent;
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        padding: 8px 12px;
+        width: 60px;
+        font-family: Georgia, serif;
+        color: var(--dark);
+        transition: 0.3s;
+    }
+
+    .inputnum:focus {
+        background-color: white;
+        outline: none;
+        border-color: var(--dark);
+    }
+
+    .errorlist {
+        color: #8a1a1a;
+        font-size: 0.8rem;
+        margin-top: 4px;
+        list-style: none;
+        padding: 0;
+        font-family: Georgia, serif;
+    }
+
+    /* PASSWORD STRENGTH BAR */
+    .stro {
+        width: 100%;
+        height: 8px;
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        background-color: var(--bg);
+        margin: 16px 0;
+    }
+
+    .passw {
         height: 100%;
         width: 0%;
-        background-color: white;
-        border-radius: 5px;
-        transition-duration: 0.5s;
+        border-radius: 2px;
+        transition: 0.5s;
+        background-color: transparent;
     }
-    body{
-        background-color: #d2bcc5;
+
+    /* SUBMIT BUTTON */
+    .submit-row {
+        text-align: center;
+        padding: 16px 0 8px 0;
+        border-top: 2px double var(--border);
+        margin-top: 10px;
     }
-    table{
-        margin:10px ;
-        width: 800px;
-        border:1px solid black;
-        padding:15px;
-        background-color: rgb(150,100,120);
-        border-radius:5px;
-        box-shadow: 50px 50px 10px #9a8b8b;
-    }
-    td,th{
-        border:1px solid black;
-        padding:15px;
-        border-radius:5px;
-        width: 50%;
-        
-    }
-    tr{
-        background-color: rgb(220,200,200);
-    }
-    input[type=submit]{
-        background-color: rgb(50,20,20);
-        color:white;
-        padding:10px 15px;
-        display: block;
-        margin: 0 auto;
-        border:1px solid black;
-        font-size: 18px;
-        border-radius:5px;
-        transition-duration: 0.5s;
+
+    input[type=submit] {
+        background-color: var(--dark);
+        color: var(--bg);
+        padding: 10px 40px;
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        font-size: 1rem;
+        font-family: Georgia, serif;
+        letter-spacing: 2px;
+        text-transform: uppercase;
         cursor: pointer;
+        transition: 0.3s;
     }
-    input[type=submit]:hover{
-        background-color: rgb(220,200,200);
-        color:black;
-    }
-    label{
-        font-weight: bold;
-        font-size: large;
-    }
-    .inputtxt{
-        background-color: transparent;
-        border:1px solid black;
-        padding:10px;
-        border-radius: 10px;
-        width:150px;
-        transition-duration:0.5s;
-    }
-    .inputtxt:focus{
-        width:250px;
-        background-color: white;
-    }
-    .inputnum{
-        background-color: transparent;
-        border:1px solid black;
-        padding:10px;
-        border-radius: 10px;
-        width:50px;
-        transition-duration:0.5s;
-    }
-    .inputnum:focus{
-        background-color: white;
+
+    input[type=submit]:hover {
+        background-color: var(--accent);
+        color: white;
+        border-color: var(--accent);
     }
 </style>
-<h2>SIGN IN</h2> 
+
+<h2>Register</h2>
+
 <form action="" method="post">
     {% csrf_token %}
-    <table>
-        <thead>
-            <th colspan="2">
-                Register-Form
-            </th>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    <label for="id_username">{{ form.username.label_tag }}</label>
-                </td>
-                <td>
+    <div class="form-wrapper">
+        <div class="form-header">Register Form</div>
+        <div class="form-body">
+
+            <div class="form-row">
+                <label for="id_username">Username</label>
+                <div class="field">
                     {{ form.username }}
                     {{ form.username.errors }}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="id_email">{{ form.email.label_tag }}</label>
-                </td>
-                <td>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label for="id_email">Email Address</label>
+                <div class="field">
                     {{ form.email }}
                     {{ form.email.errors }}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="id_age">{{ form.age.label_tag }}</label>
-                </td>
-                <td>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label for="id_age">Age</label>
+                <div class="field">
                     {{ form.age }}
                     {{ form.age.errors }}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="id_password1">{{ form.password1.label_tag }}</label>
-                </td>
-                <td>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label for="id_password1">Password</label>
+                <div class="field">
                     {{ form.password1 }}
                     {{ form.password1.errors }}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="id_password2">{{ form.password2.label_tag }}</label>
-                </td>
-                <td>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label for="id_password2">Confirm Password</label>
+                <div class="field">
                     {{ form.password2 }}
                     {{ form.password2.errors }}
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <div class="stro">
-                        <div class="passw"></div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <input type="submit" value="Send">
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                </div>
+            </div>
+
+            <div class="stro">
+                <div class="passw"></div>
+            </div>
+
+            <div class="submit-row">
+                <input type="submit" value="Register">
+            </div>
+
+        </div>
+    </div>
 </form>
+
 <script>
     let count = 0
     function check(event){
@@ -174,60 +233,22 @@
         }
     }
     function pass(event) {
-        password = document.getElementById('id_password1').value
-        ico = document.getElementsByClassName('passw').style
+        let password = document.getElementById('id_password1').value
         let strength = {
-            hasLower: false,
-            hasUpper: false,
-            hasNumber: false,
-            hasSymbol: false,
+            hasLower: /[a-z]/.test(password),
+            hasUpper: /[A-Z]/.test(password),
+            hasNumber: /[0-9]/.test(password),
+            hasSymbol: /[^a-zA-Z0-9]/.test(password),
         };
-
-        if (/[a-z]/.test(password)) {
-            strength.hasLower = true;
-        }
-        if (/[A-Z]/.test(password)) {
-            strength.hasUpper = true;
-        }
-        if (/[0-9]/.test(password)) {
-            strength.hasNumber = true;
-        }
-        if (/[^a-zA-Z0-9]/.test(password)) {
-            strength.hasSymbol = true;
-        }
-
-        let criteriaMet = 0;
-        if (strength.hasLower) criteriaMet++;
-        if (strength.hasUpper) criteriaMet++;
-        if (strength.hasNumber) criteriaMet++;
-        if (strength.hasSymbol) criteriaMet++;
-
-        let strengthLevel = "";
+        let criteriaMet = Object.values(strength).filter(Boolean).length;
+        let bar = document.getElementsByClassName('passw')[0];
         switch (criteriaMet) {
-            case 0:
-                document.getElementsByClassName('passw')[0].style.backgroundColor = "white"
-                document.getElementsByClassName('passw')[0].style.width = '0%';
-                break;
-            case 1:
-                document.getElementsByClassName('passw')[0].style.backgroundColor = "red"
-                document.getElementsByClassName('passw')[0].style.width = '25%';
-            break;
-            case 2:
-                document.getElementsByClassName('passw')[0].style.backgroundColor = "orange"
-                document.getElementsByClassName('passw')[0].style.width = '50%';
-            break;
-            case 3:
-                document.getElementsByClassName('passw')[0].style.backgroundColor = "yellow"
-                document.getElementsByClassName('passw')[0].style.width = '75%';
-            break;
-            case 4:
-                document.getElementsByClassName('passw')[0].style.backgroundColor = "limegreen"
-                document.getElementsByClassName('passw')[0].style.width = '100%';
-            break;
+            case 0: bar.style.backgroundColor = "transparent"; bar.style.width = '0%'; break;
+            case 1: bar.style.backgroundColor = "red"; bar.style.width = '25%'; break;
+            case 2: bar.style.backgroundColor = "orange"; bar.style.width = '50%'; break;
+            case 3: bar.style.backgroundColor = "yellow"; bar.style.width = '75%'; break;
+            case 4: bar.style.backgroundColor = "limegreen"; bar.style.width = '100%'; break;
         }
-
     }
-
-
 </script>
 {% endblock content %}

@@ -1,63 +1,246 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+
+{% block title %}{{ object.title }}{% endblock title %}
+
+{% block w %}
+<style>
+    /* ARTICLE */
+    h1 {
+        font-family: 'Playfair Display', Georgia, serif;
+        color: var(--dark);
+        letter-spacing: 2px;
+        font-size: 2rem;
+        margin-bottom: 8px;
+    }
+
+    .article-meta {
+        font-size: 0.85rem;
+        color: var(--text-light);
+        font-family: Georgia, serif;
+        margin-bottom: 20px;
+    }
+
+    .article-body {
+        font-family: Georgia, serif;
+        color: var(--dark);
+        line-height: 1.9;
+        font-size: 1rem;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        padding: 20px 0;
+        margin-bottom: 16px;
+    }
+
+    /* STATS */
+    .article-stats {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 24px;
+        font-family: Georgia, serif;
+        font-size: 0.9rem;
+        color: var(--text-light);
+    }
+
+    /* LIKE BUTTON */
+    .like-btn {
+        background-color: transparent;
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        padding: 4px 14px;
+        font-family: Georgia, serif;
+        font-size: 0.9rem;
+        color: var(--dark);
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .like-btn:hover {
+        background-color: var(--accent);
+        color: white;
+        border-color: var(--accent);
+    }
+
+    /* COMMENTS SECTION */
+    .comments-section {
+        margin-top: 32px;
+    }
+
+    .comments-section h3 {
+        font-family: 'Playfair Display', Georgia, serif;
+        color: var(--dark);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        font-size: 1rem;
+        border-bottom: 2px double var(--border);
+        padding-bottom: 8px;
+        margin-bottom: 16px;
+    }
+
+    .comment-card {
+        background-color: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        padding: 12px 16px;
+        margin-bottom: 12px;
+        box-shadow: 3px 3px 0px var(--border);
+    }
+
+    .comment-author {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-weight: bold;
+        font-size: 0.9rem;
+        color: var(--dark);
+        margin-bottom: 4px;
+    }
+
+    .comment-text {
+        font-family: Georgia, serif;
+        font-size: 0.9rem;
+        color: var(--text-light);
+    }
+
+    .no-comments {
+        font-family: Georgia, serif;
+        font-style: italic;
+        color: var(--text-light);
+        font-size: 0.9rem;
+    }
+
+    /* COMMENT FORM */
+    .comment-form-section {
+        margin-top: 32px;
+    }
+
+    .comment-form-section h3 {
+        font-family: 'Playfair Display', Georgia, serif;
+        color: var(--dark);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        font-size: 1rem;
+        border-bottom: 2px double var(--border);
+        padding-bottom: 8px;
+        margin-bottom: 16px;
+    }
+
+    .comment-form-section textarea {
+        background-color: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        padding: 10px 12px;
+        font-family: Georgia, serif;
+        color: var(--dark);
+        width: 100%;
+        transition: 0.3s;
+        resize: vertical;
+    }
+
+    .comment-form-section textarea:focus {
+        background-color: white;
+        outline: none;
+        border-color: var(--dark);
+    }
+
+    .btn-submit {
+        background-color: var(--dark);
+        color: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        padding: 8px 24px;
+        font-family: 'Playfair Display', Georgia, serif;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 10px;
+    }
+
+    .btn-submit:hover {
+        background-color: var(--accent);
+        color: white;
+    }
+
+    /* ACTIONS */
+    .article-actions {
+        margin-top: 32px;
+        padding-top: 16px;
+        border-top: 2px double var(--border);
+        font-family: Georgia, serif;
+        font-size: 0.9rem;
+        display: flex;
+        gap: 16px;
+        align-items: center;
+    }
+
+    .article-actions a {
+        color: var(--accent);
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .article-actions a:hover {
+        color: var(--dark);
+    }
+</style>
+{% endblock w %}
+
 {% block content %}
-<div class="article-container" style="max-width: 800px; margin: 2rem auto; font-family: sans-serif;">
-    
-    <!-- نمایش مقاله -->
+    <!-- ARTICLE -->
     <article>
         <h1>{{ object.title }}</h1>
-        <p class="meta">by {{ object.author }} | {{ object.date }}</p>
-        <div class="content">
+        <p class="article-meta">by {{ object.author }} | {{ object.date }}</p>
+        <div class="article-body">
             {{ object.body }}
         </div>
     </article>
 
-    <hr>
-    <p>Views: {{ object.views }}</p>
-    <form method="post" action="{% url 'article_like' article.pk %}">
-        {% csrf_token %}
-        <button type="submit">
-            {% if request.user in article.likes.all %}
-                ❤️ Unlike ({{ object.likes.count }})
-            {% else %}
-                🤍 Like ({{ object.likes.count }})
-            {% endif %}
-        </button>
-    </form>
-    <!-- بخش نظرات -->
+    <!-- STATS & LIKE -->
+    <div class="article-stats">
+        <span>Views: {{ object.views }}</span>
+        <form method="post" action="{% url 'article_like' object.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="like-btn">
+                {% if request.user in object.likes.all %}
+                    ❤️ Unlike ({{ object.likes.count }})
+                {% else %}
+                    🤍 Like ({{ object.likes.count }})
+                {% endif %}
+            </button>
+        </form>
+    </div>
+
+    <!-- COMMENTS -->
     <section class="comments-section">
         <h3>Comments</h3>
-        {% for comment in article.comment_set.all %}
-            <div class="comment" style="margin-bottom: 1rem; padding: 10px; background: #f9f9f9; border-radius: 5px;">
-                <strong>{{ comment.author }}</strong>
-                <p>{{ comment }}</p>
+        {% for comment in object.comment_set.all %}
+            <div class="comment-card">
+                <div class="comment-author">{{ comment.author }}</div>
+                <div class="comment-text">{{ comment }}</div>
             </div>
         {% empty %}
-            <p>No comments yet. Be the first!</p>
+            <p class="no-comments">No comments yet. Be the first!</p>
         {% endfor %}
     </section>
 
-    <hr>
-
-    <!-- فرم ارسال نظر -->
-    <section class="comment-form">
+    <!-- COMMENT FORM -->
+    <section class="comment-form-section">
         <h3>Add a comment</h3>
         <form method="post" action="">
             {% csrf_token %}
-            <div style="margin-bottom: 10px;">
-                {{ form|crispy }}
-            </div>
-            <button type="submit" style="padding: 10px 20px;">Register your comment</button>
+            {{ form|crispy }}
+            <button type="submit" class="btn-submit">Post Comment</button>
         </form>
     </section>
 
-    <div class="actions" style="margin-top: 2rem;">
-        {% if user == article.author %}
-            <a href="{% url 'article_edit' article.pk %}">Edit</a> | 
-            <a href="{% url 'article_delete' article.pk %}">Delete</a>
+    <!-- ACTIONS -->
+    <div class="article-actions">
+        {% if user == object.author or user.is_staff %}
+            <a href="{% url 'article_edit' object.pk %}">Edit Article</a>
+            <span style="color: var(--border);">|</span>
+            <a href="{% url 'article_delete' object.pk %}">Delete Article</a>
+            <span style="color: var(--border);">|</span>
         {% endif %}
-        <p><a href="{% url 'article_list' %}">Back to Articles</a></p>
+        <a href="{% url 'article_list' %}">Back to Articles</a>
     </div>
-</div>
 {% endblock %}
-

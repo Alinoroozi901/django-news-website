@@ -1,12 +1,118 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 
-{% block title %}Create{% endblock title %}
+{% block title %}New Article{% endblock title %}
+
+{% block w %}
+<style>
+    h1 {
+        font-family: 'Playfair Display', Georgia, serif;
+        color: var(--dark);
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        border-bottom: 2px double var(--border);
+        padding-bottom: 8px;
+        margin-bottom: 24px;
+    }
+
+    .form-wrapper {
+        background-color: var(--surface);
+        border: 2px solid var(--dark);
+        border-radius: 2px;
+        box-shadow: 6px 6px 0px var(--border);
+    }
+
+    .form-header {
+        background-color: var(--dark);
+        color: var(--bg);
+        text-align: center;
+        padding: 12px;
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 1rem;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        border-bottom: 2px solid var(--border);
+    }
+
+    .form-body {
+        padding: 24px;
+    }
+
+    /* Override crispy */
+    .form-body label {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-weight: bold;
+        color: var(--dark);
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+        margin-bottom: 4px;
+    }
+
+    .form-body input[type=text],
+    .form-body textarea {
+        background-color: var(--bg);
+        border: 1px solid var(--border) !important;
+        border-radius: 2px !important;
+        padding: 10px 12px;
+        font-family: Georgia, serif;
+        color: var(--dark);
+        width: 100%;
+        transition: 0.3s;
+        box-shadow: none !important;
+    }
+
+    .form-body input[type=text]:focus,
+    .form-body textarea:focus {
+        background-color: white !important;
+        outline: none;
+        border-color: var(--dark) !important;
+        box-shadow: none !important;
+    }
+
+    .form-body textarea {
+        min-height: 250px;
+        resize: vertical;
+    }
+
+    .btn-submit {
+        background-color: var(--dark);
+        color: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        padding: 10px 32px;
+        font-family: 'Playfair Display', Georgia, serif;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 8px;
+    }
+
+    .btn-submit:hover {
+        background-color: var(--accent);
+        color: white;
+    }
+
+    .submit-row {
+        border-top: 2px double var(--border);
+        padding-top: 16px;
+        margin-top: 8px;
+    }
+</style>
+{% endblock w %}
 
 {% block content %}
-<h1>New article</h1>
-<form action="" method="post">{% csrf_token %}
-    {{ form|crispy }}
-    <button class="btn btn-success ml-2" type="submit">Create</button>
-</form>
+<h1>New Article</h1>
+<div class="form-wrapper">
+    <div class="form-header">Write Your Article</div>
+    <div class="form-body">
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="submit-row">
+                <button type="submit" class="btn-submit">Publish</button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock content %}
