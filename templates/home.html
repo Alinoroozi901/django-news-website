@@ -2,10 +2,578 @@
 
 {% block title %}Home{% endblock title %}
 
+{% block w %}
+<style>
+    /* PAGE */
+    .welcome {
+        font-family: 'Playfair Display', Georgia, serif;
+        color: var(--dark);
+        font-size: 1.2rem;
+        margin-bottom: 32px;
+        border-bottom: 2px double var(--border);
+        padding-bottom: 12px;
+    }
+
+    /* GAME WRAPPER */
+    .game-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    /* MODE SELECTION */
+    .mode-selection {
+        background-color: var(--surface);
+        border: 2px solid var(--dark);
+        border-radius: 2px;
+        box-shadow: 6px 6px 0px var(--border);
+        padding: 24px 40px;
+        text-align: center;
+    }
+
+    .mode-title {
+        font-family: 'Playfair Display', Georgia, serif;
+        color: var(--dark);
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        border-bottom: 2px double var(--border);
+        padding-bottom: 8px;
+    }
+
+    .mode-buttons {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+    }
+
+    .mode-btn {
+        background-color: var(--dark);
+        color: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        padding: 10px 24px;
+        font-family: 'Playfair Display', Georgia, serif;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: 0.3s;
+        font-size: 0.85rem;
+    }
+
+    .mode-btn:hover {
+        background-color: var(--accent);
+        color: white;
+    }
+
+    /* GAME AREA */
+    .game-area {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .game-area.active {
+        display: flex;
+    }
+
+    /* STATUS */
+    .status {
+        font-family: 'Playfair Display', Georgia, serif;
+        color: var(--dark);
+        font-size: 1rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        background-color: var(--surface);
+        border: 1px solid var(--border);
+        padding: 8px 24px;
+        border-radius: 2px;
+    }
+
+    /* BOARD */
+    .board {
+        display: grid;
+        grid-template-columns: repeat(3, 100px);
+        grid-template-rows: repeat(3, 100px);
+        gap: 6px;
+        background-color: var(--dark);
+        padding: 6px;
+        border-radius: 2px;
+        box-shadow: 6px 6px 0px var(--border);
+    }
+
+    .cell {
+        width: 100px;
+        height: 100px;
+        background-color: var(--surface);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 2.5rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.2s;
+        color: var(--dark);
+        border: none;
+        border-radius: 2px;
+    }
+
+    .cell:hover:not(.taken) {
+        background-color: var(--bg);
+    }
+
+    .cell.taken {
+        cursor: not-allowed;
+    }
+
+    .cell.x {
+        color: var(--dark);
+    }
+
+    .cell.o {
+        color: var(--accent);
+    }
+
+    .cell.winner {
+        background-color: var(--border);
+        color: white;
+    }
+
+    /* RESET BUTTON */
+    .reset-btn {
+        background-color: var(--dark);
+        color: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        padding: 8px 32px;
+        font-family: 'Playfair Display', Georgia, serif;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: 0.3s;
+        font-size: 0.85rem;
+    }
+
+    .reset-btn:hover {
+        background-color: var(--accent);
+        color: white;
+    }
+
+    .back-btn {
+        background-color: transparent;
+        color: var(--accent);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        padding: 6px 20px;
+        font-family: Georgia, serif;
+        cursor: pointer;
+        transition: 0.3s;
+        font-size: 0.85rem;
+    }
+
+    .back-btn:hover {
+        background-color: var(--border);
+        color: white;
+    }
+
+    /* SCORES */
+    .scores {
+        display: flex;
+        gap: 24px;
+        font-family: 'Playfair Display', Georgia, serif;
+        color: var(--dark);
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+    }
+
+    .score-item {
+        background-color: var(--surface);
+        border: 1px solid var(--border);
+        padding: 6px 16px;
+        border-radius: 2px;
+        text-align: center;
+    }
+
+    .score-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--text-light);
+    }
+
+    .score-value {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+</style>
+{% endblock w %}
+
 {% block content %}
-{% if user.is_authenticated %}
-    HI {{user.username}} You are {{user.age}} old
-{% else %}
-    <p>You are not loged in . Please LOGIN or SIGNUP</p>
-{% endif %}
+
+<!-- WELCOME MESSAGE -->
+<div class="welcome">
+    {% if user.is_authenticated %}
+        Welcome back, {{ user.username }}. You are {{ user.age }} years old.
+    {% else %}
+        You are not logged in. Please
+        <a href="{% url 'login' %}">Login</a> or
+        <a href="{% url 'signup' %}">Sign Up</a>.
+    {% endif %}
+</div>
+
+<!-- GAME -->
+<div class="game-wrapper">
+
+    <!-- MODE SELECTION SCREEN -->
+    <div class="mode-selection" id="modeScreen">
+        <div class="mode-title">Tic Tac Toe</div>
+        <div class="mode-buttons">
+            <button class="mode-btn" onclick="startGame('pvp')">
+                Player vs Player
+            </button>
+            <button class="mode-btn" onclick="startGame('bot')">
+                Player vs Bot
+            </button>
+        </div>
+    </div>
+
+    <!-- GAME AREA -->
+    <div class="game-area" id="gameArea">
+
+        <!-- SCORES -->
+        <div class="scores">
+            <div class="score-item">
+                <div class="score-label" id="p1label">Player X</div>
+                <div class="score-value" id="scoreX">0</div>
+            </div>
+            <div class="score-item">
+                <div class="score-label">Draws</div>
+                <div class="score-value" id="scoreDraw">0</div>
+            </div>
+            <div class="score-item">
+                <div class="score-label" id="p2label">Player O</div>
+                <div class="score-value" id="scoreO">0</div>
+            </div>
+        </div>
+
+        <!-- STATUS -->
+        <div class="status" id="status">X's Turn</div>
+
+        <!-- BOARD -->
+        <div class="board" id="board">
+            <button class="cell" onclick="handleClick(0)"></button>
+            <button class="cell" onclick="handleClick(1)"></button>
+            <button class="cell" onclick="handleClick(2)"></button>
+            <button class="cell" onclick="handleClick(3)"></button>
+            <button class="cell" onclick="handleClick(4)"></button>
+            <button class="cell" onclick="handleClick(5)"></button>
+            <button class="cell" onclick="handleClick(6)"></button>
+            <button class="cell" onclick="handleClick(7)"></button>
+            <button class="cell" onclick="handleClick(8)"></button>
+        </div>
+
+        <!-- BUTTONS -->
+        <button class="reset-btn" onclick="resetGame()">Play Again</button>
+        <button class="back-btn" onclick="goBack()">Change Mode</button>
+
+    </div>
+</div>
+
+<script>
+    // ============================================================
+    // GAME STATE
+    // These variables remember everything about the current game
+    // ============================================================
+
+    let board = ['', '', '', '', '', '', '', '', ''];
+    // board is an array of 9 empty strings
+    // each index = one cell on the board
+    // '' = empty, 'X' = X played here, 'O' = O played here
+
+    let currentPlayer = 'X';
+    // whose turn is it right now
+
+    let gameOver = false;
+    // is the game finished? stops players clicking after someone wins
+
+    let mode = '';
+    // 'pvp' = two humans playing
+    // 'bot' = human vs unbeatable bot
+
+    let scores = { X: 0, O: 0, Draw: 0 };
+    // keeps track of wins across multiple games
+
+    // ============================================================
+    // WIN CONDITIONS
+    // All 8 possible ways to win Tic Tac Toe
+    // Each array is 3 indexes that form a line on the board
+    // ============================================================
+    const WIN_CONDITIONS = [
+        [0, 1, 2], // top row
+        [3, 4, 5], // middle row
+        [6, 7, 8], // bottom row
+        [0, 3, 6], // left column
+        [1, 4, 7], // middle column
+        [2, 5, 8], // right column
+        [0, 4, 8], // diagonal top-left to bottom-right
+        [2, 4, 6], // diagonal top-right to bottom-left
+    ];
+
+    // ============================================================
+    // START GAME
+    // Called when player picks a mode
+    // ============================================================
+    function startGame(selectedMode) {
+        mode = selectedMode;
+        // save which mode was chosen
+
+        // show game area, hide mode screen
+        document.getElementById('modeScreen').style.display = 'none';
+        document.getElementById('gameArea').classList.add('active');
+
+        // update score labels based on mode
+        if (mode === 'bot') {
+            document.getElementById('p1label').textContent = 'You (X)';
+            document.getElementById('p2label').textContent = 'Bot (O)';
+        } else {
+            document.getElementById('p1label').textContent = 'Player X';
+            document.getElementById('p2label').textContent = 'Player O';
+        }
+
+        resetGame();
+        // start fresh game
+    }
+
+    // ============================================================
+    // HANDLE CLICK
+    // Called when a player clicks a cell
+    // index = which cell was clicked (0-8)
+    // ============================================================
+    function handleClick(index) {
+        // if game is over OR cell is already taken → do nothing
+        if (gameOver || board[index] !== '') return;
+
+        // if it's bot mode and it's O's turn → do nothing (wait for bot)
+        if (mode === 'bot' && currentPlayer === 'O') return;
+
+        makeMove(index, currentPlayer);
+        // place the current player's mark on the board
+    }
+
+    // ============================================================
+    // MAKE MOVE
+    // Places a mark on the board and checks if game is over
+    // player = 'X' or 'O'
+    // index = which cell
+    // ============================================================
+    function makeMove(index, player) {
+        board[index] = player;
+        // save the move in our board array
+
+        // update the visual cell
+        let cells = document.querySelectorAll('.cell');
+        cells[index].textContent = player;
+        cells[index].classList.add('taken', player.toLowerCase());
+        // taken = no more clicking
+        // x or o = correct color
+
+        let winner = checkWinner();
+        // did anyone win?
+
+        if (winner) {
+            // highlight winning cells
+            winner.forEach(i => cells[i].classList.add('winner'));
+
+            scores[player]++;
+            // add point to winner's score
+
+            updateScores();
+            document.getElementById('status').textContent = player + ' Wins!';
+            gameOver = true;
+            // stop the game
+            return;
+        }
+
+        if (board.every(cell => cell !== '')) {
+            // board.every checks if ALL cells are filled
+            // if yes → draw!
+            scores.Draw++;
+            updateScores();
+            document.getElementById('status').textContent = "It's a Draw!";
+            gameOver = true;
+            return;
+        }
+
+        // switch to other player
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        // if current is X → switch to O, if O → switch to X
+
+        document.getElementById('status').textContent = currentPlayer + "'s Turn";
+
+        // if bot mode and now it's O's turn → let the bot play
+        if (mode === 'bot' && currentPlayer === 'O') {
+            setTimeout(() => botMove(), 400);
+            // wait 400ms so it feels natural, then bot plays
+        }
+    }
+
+    // ============================================================
+    // CHECK WINNER
+    // Looks through all 8 win conditions
+    // Returns the winning indexes if found, null if no winner yet
+    // ============================================================
+    function checkWinner() {
+        for (let condition of WIN_CONDITIONS) {
+            let [a, b, c] = condition;
+            // destructure the 3 indexes
+
+            if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                // board[a] must not be empty AND all three must be equal
+                return condition;
+                // return the winning indexes so we can highlight them
+            }
+        }
+        return null;
+        // no winner found
+    }
+
+    // ============================================================
+    // BOT MOVE - MINIMAX ALGORITHM
+    // This makes the bot UNBEATABLE
+    // Minimax tries every possible future move and picks the best one
+    // ============================================================
+    function botMove() {
+        let bestScore = -Infinity;
+        // start with worst possible score
+
+        let bestMove = null;
+
+        for (let i = 0; i < 9; i++) {
+            // try every empty cell
+            if (board[i] === '') {
+                board[i] = 'O';
+                // pretend bot plays here
+
+                let score = minimax(board, 0, false);
+                // score this move using minimax
+                // false = next turn is human (minimizer)
+
+                board[i] = '';
+                // undo the pretend move
+
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMove = i;
+                    // remember the best move found so far
+                }
+            }
+        }
+
+        makeMove(bestMove, 'O');
+        // actually play the best move
+    }
+
+    // ============================================================
+    // MINIMAX
+    // Recursively tries every possible game from current state
+    // isMaximizing = true means it's bot's turn (wants high score)
+    // isMaximizing = false means it's human's turn (wants low score)
+    // depth = how many moves deep we are (used to prefer faster wins)
+    // ============================================================
+    function minimax(board, depth, isMaximizing) {
+        let winner = checkWinner();
+
+        if (winner) {
+            // someone won — who?
+            let winnerMark = board[winner[0]];
+            if (winnerMark === 'O') return 10 - depth;
+            // bot wins → positive score (minus depth = prefer faster wins)
+            if (winnerMark === 'X') return depth - 10;
+            // human wins → negative score
+        }
+
+        if (board.every(cell => cell !== '')) return 0;
+        // draw → score of 0
+
+        if (isMaximizing) {
+            // bot's turn → try to MAXIMIZE the score
+            let bestScore = -Infinity;
+            for (let i = 0; i < 9; i++) {
+                if (board[i] === '') {
+                    board[i] = 'O';
+                    let score = minimax(board, depth + 1, false);
+                    board[i] = '';
+                    bestScore = Math.max(score, bestScore);
+                    // keep the highest score
+                }
+            }
+            return bestScore;
+        } else {
+            // human's turn → try to MINIMIZE the score
+            let bestScore = Infinity;
+            for (let i = 0; i < 9; i++) {
+                if (board[i] === '') {
+                    board[i] = 'X';
+                    let score = minimax(board, depth + 1, true);
+                    board[i] = '';
+                    bestScore = Math.min(score, bestScore);
+                    // keep the lowest score
+                }
+            }
+            return bestScore;
+        }
+    }
+
+    // ============================================================
+    // UPDATE SCORES
+    // Updates the score display on screen
+    // ============================================================
+    function updateScores() {
+        document.getElementById('scoreX').textContent = scores.X;
+        document.getElementById('scoreO').textContent = scores.O;
+        document.getElementById('scoreDraw').textContent = scores.Draw;
+    }
+
+    // ============================================================
+    // RESET GAME
+    // Clears the board for a new game without resetting scores
+    // ============================================================
+    function resetGame() {
+        board = ['', '', '', '', '', '', '', '', ''];
+        // empty board again
+
+        currentPlayer = 'X';
+        // X always goes first
+
+        gameOver = false;
+        // game is running again
+
+        // clear all cells visually
+        document.querySelectorAll('.cell').forEach(cell => {
+            cell.textContent = '';
+            cell.className = 'cell';
+            // reset classes — removes taken, x, o, winner
+        });
+
+        document.getElementById('status').textContent = "X's Turn";
+    }
+
+    // ============================================================
+    // GO BACK
+    // Returns to mode selection screen
+    // ============================================================
+    function goBack() {
+        document.getElementById('modeScreen').style.display = 'block';
+        document.getElementById('gameArea').classList.remove('active');
+        scores = { X: 0, O: 0, Draw: 0 };
+        // reset scores when going back
+        updateScores();
+        resetGame();
+    }
+</script>
+
 {% endblock content %}
