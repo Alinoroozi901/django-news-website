@@ -171,7 +171,7 @@
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
-        
+
 
     </style>
     {% block w %}{% endblock w %}
@@ -183,6 +183,7 @@
                 <a href="{% url 'home' %}" class="navbar-brand">Newspaper</a>
                 <div class="d-flex align-items-center gap-2">
                     {% if user.is_authenticated %}
+                        <a href="{% url 'article_list' %}" class="btn-new">See Articles</a>
                         <a href="{% url 'article_create' %}" class="btn-new">+ New Article</a>
                         <div class="dropdown">
                             <a href="#" class="btn-user dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
