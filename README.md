@@ -1,6 +1,10 @@
 # Django News Website
 
-A full-featured news and article platform built with Django, focusing on clean backend architecture using Class-Based Views and custom mixins.
+A full-featured news and article platform built with Python and Django.
+
+The project demonstrates authentication, article CRUD, permissions,
+comments, search, likes, unique view tracking, Class-Based Views,
+and reusable custom mixins.
 
 ---
 This is the Homepage:
@@ -127,9 +131,12 @@ news/
 
 ## About the Developer
 
-Hi! I'm Ali, a 15-year-old self-taught Django developer from Iran. I started coding at 14 and I'm passionate about building real web applications and growing as a backend developer.
+I'm a self-taught Python and Django developer focused on building
+practical web applications and improving my backend development skills.
 
-Feel free to reach out or connect!
+This project demonstrates my experience with Django authentication,
+Class-Based Views, CRUD operations, permissions, search, comments,
+likes, and view tracking.
 
 GitHub: https://github.com/Alinoroozi901
 
