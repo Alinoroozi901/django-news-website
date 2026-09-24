@@ -3,6 +3,24 @@
 A full-featured news and article platform built with Django, focusing on clean backend architecture using Class-Based Views and custom mixins.
 
 ---
+This is the Homepage:
+![Home page](https://github.com/Alinoroozi901/django-news-website/blob/main/screeenshots/Screenshot%202026-09-24%20115928.png)
+
+this is the Signup page and the Login:
+![Signup page](https://github.com/Alinoroozi901/django-news-website/blob/main/screeenshots/Screenshot%202026-09-24%20120049.png)
+Login:
+![Login page](https://github.com/Alinoroozi901/django-news-website/blob/main/screeenshots/Screenshot%202026-09-24%20120100.png)
+
+this is the Articles Page:
+![Articles pgae](https://github.com/Alinoroozi901/django-news-website/blob/main/screeenshots/Screenshot%202026-09-24%20120041.png)
+
+This is creating an Article:
+![Article_Create page](https://github.com/Alinoroozi901/django-news-website/blob/main/screeenshots/Screenshot%202026-09-24%20115944.png)
+
+and Article detail page:
+![Article_Detail](https://github.com/Alinoroozi901/django-news-website/blob/main/screeenshots/Screenshot%202026-09-24%20120031.png)
+
+---
 
 ## Features
 
